@@ -30,20 +30,14 @@
                         high-precision timepieces, from Professional to Classic<br>
                         models to suit any wrist.
                 </div>
-                <div class="content2-text2">
-                        Find your Wristique>
+                
                 </div>
+                
             </div>
+            
+            <div class="content2-text2">
+                        Find your Wristique>
         </div>
-        <div class="pad"></div>
-        <!--<div id="myBtnContainer">-->
-        <div class="container-btn">
-            <div class="flex-container_btn">
-                <button class="btn active" onclick="filterSelection('all')"> Show all</button>
-                <button class="btn" onclick="filterSelection('Classic')"> Classic</button>
-                <button class="btn" onclick="filterSelection('professional')">Professional </button>
-                <button class="btn" onclick="filterSelection('casual')"> Casual</button>
-            </div> 
-        </div>
+
 </body>
 </html>

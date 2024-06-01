@@ -26,12 +26,13 @@ if(isset($_GET['logout'])){
     <title>Admin</title>
 </head>
 <body>
-    <div class=border-top-0>
-            <a href="?logout" class="btn btn-link">Log out</a><br>
-            <a href="?manageproducts" class="btn btn-link">Manage Products</a>
-            <a href="?manageorder" class="btn btn-link">Manage Orders</a>
-            <a href="?dashboard" class="btn btn-link">Dashboards</a>
-            <a href="?registered_users" class="btn btn-link">Customer Info</a>
+    <div class="border-top-0" style="background-color: green">
+            <a href="#"  style="text-decoration: none; color: white; float: left; margin-left: 85vh; "> ADMIN PAGE</a><br>
+            <a href="?manageproducts" class="btn btn-link" style="text-decoration: none; color: white; font-size: large;">Manage Products</a>
+            <a href="?manageorder" class="btn btn-link" style="text-decoration: none; color: white; font-size: large;">Manage Orders</a>
+            <a href="?dashboard" class="btn btn-link" style="text-decoration: none; color: white; font-size: large;">Dashboards</a>
+            <a href="?logout" class="btn btn-link" style="text-decoration: none; color: white; font-size: large;">Log out</a>
+            <a href="?registered_users" class="btn btn-link" style="text-decoration: none; color: white; font-size: large;">Customer Info</a>
     </div>
 
 <!--============================ M A N A G E - P R O D U C T S ================================-->
@@ -46,7 +47,7 @@ if(isset($_GET['logout'])){
                     if(isset($_GET['deactivate_product'])){
                         $pdt_id =$_GET['deactivate_product'];
 
-                        $sql_deactivate_product = "UPDATE `products`
+                        $sql_deactivate_product = "UPDATE products
                                                         SET `pdt_status`='I'
                                                    WHERE `pdt_id`='$pdt_id';";
 
@@ -57,7 +58,7 @@ if(isset($_GET['logout'])){
                     if(isset($_GET['activate_product'])){
                        $pdt_id = $_GET['activate_product'];
 
-                       $sql_activate_product = "UPDATE `products`
+                       $sql_activate_product = "UPDATE products
                                                     SET `pdt_status`='A'
                                                 WHERE `pdt_id`='$pdt_id';";
 
@@ -68,13 +69,13 @@ if(isset($_GET['logout'])){
                     if(isset($_GET['update_product'])){
                         $pdt_id = $_GET['update_product'];
                         
-                        $sql_get_product_info = "SELECT * FROM `products`
+                        $sql_get_product_info = "SELECT * FROM products
                                                     WHERE pdt_id = '$pdt_id'";
                         $result = mysqli_query($conn, $sql_get_product_info);
                         $data_row = mysqli_fetch_assoc($result);
                 ?>
                 <h3 class="display-6">Update Product Info</h3>
-                   <form action="process_update_product.php" method="POST">
+                   <form action="process_update_product.php" method="POST">>
                     
                         <label for="">Product Id</label>
                         <input value="<?php echo $data_row['pdt_id'];?>" type="text" name="u_pdt_id" readonly class="form-control mb-3">
@@ -94,6 +95,7 @@ if(isset($_GET['logout'])){
                 }
                 ?>
             <!--Add New Product--> 
+
              <hr>
               <h3 class="display-6">Add New Product</h3>
               
@@ -130,7 +132,7 @@ if(isset($_GET['logout'])){
         <!--Update, Deactivate Function-->
            <div class="col-8">
                <?php
-                    $sql_get_products = "SELECT * FROM `products` WHERE `pdt_status`='A' order by pdt_id ASC";
+                    $sql_get_products = "SELECT * FROM products WHERE `pdt_status`='A' order by pdt_id ASC";
                     $get_result = mysqli_query($conn, $sql_get_products); 
                ?>
                <table class="table">
@@ -142,8 +144,8 @@ if(isset($_GET['logout'])){
                             <td><?php echo $row['pdt_name'];?></td>
                             <td><?php echo $row['pdt_description'];?></td>
                             <td><?php echo "Php " . number_format($row['pdt_price'],2);?></td>
-                            <td> <a href="../admin/index.php?manageproducts&update_product=<?php echo $row['pdt_id'];?>" class="btn btn-success">Update</a> </td>
-                            <td> <a href="../admin/index.php?manageproducts&deactivate_product=<?php echo $row['pdt_id'];?>" class="btn btn-danger">Deactivate</a> </td>
+                            <td> <a href="../admin/index.php?manageitems&update_product=<?php echo $row['pdt_id'];?>" class="btn btn-success">Update</a> </td>
+                            <td> <a href="../admin/index.php?manageitems&deactivate_product=<?php echo $row['pdt_id'];?>" class="btn btn-danger">Deactivate</a> </td>
                         </tr>
                        <?php 
                        }
@@ -151,7 +153,7 @@ if(isset($_GET['logout'])){
                    
         <!--Update, Activate Function-->
                <?php
-                    $sql_get_products2 = "SELECT * FROM `products` WHERE `pdt_status`='I' order by pdt_id ASC";
+                    $sql_get_products2 = "SELECT * FROM products WHERE `pdt_status`='I' order by pdt_id ASC";
                     $get_result2 = mysqli_query($conn, $sql_get_products2); 
                ?>
                <table class="table">
@@ -163,8 +165,8 @@ if(isset($_GET['logout'])){
                             <td><?php echo $row['pdt_name'];?></td>
                             <td><?php echo $row['pdt_description'];?></td>
                             <td><?php echo "Php " . number_format($row['pdt_price'],2);?></td>
-                            <td> <a href="../admin/index.php?manageproducts&update_product=<?php echo $row['pdt_id'];?>" class="btn btn-success">Update</a> </td>
-                            <td> <a href="../admin/index.php?manageproducts&activate_product=<?php echo $row['pdt_id'];?>" class="btn btn-info">Activate</a> </td>
+                            <td> <a href="../admin/index.php?manageitems&update_product=<?php echo $row['pdt_id'];?>" class="btn btn-success">Update</a> </td>
+                            <td> <a href="../admin/index.php?manageitems&activate_product=<?php echo $row['pdt_id'];?>" class="btn btn-info">Activate</a> </td>
                         </tr>
                        <?php 
                        }
@@ -183,12 +185,12 @@ if(isset($_GET['logout'])){
 <?php if(isset($_GET['manageorder'])) { ?>
     <div class="row">
         <div class="col-12">
-              <h3 class="display-3">Orders</h3>
-              <a href="?manageorder&order_phases=2" class="btn btn-link">New</a>
-              <a href="?manageorder&order_phases=3" class="btn btn-link">Pending</a>
-              <a href="?manageorder&order_phases=4" class="btn btn-link">To Ship</a>
-              <a href="?manageorder&order_phases=5" class="btn btn-link">Delivered</a>
-              <a href="?manageorder&order_phases=0" class="btn btn-link">Cancelled</a>
+        <h3 class="display-3" style="text-align: center;">Orders</h3>
+              <a href="?manageorder&order_phases=2" class="btn btn-link" style="text-decoration: none;color: black; font-size: large; margin-left: 75vh;">New</a>
+              <a href="?manageorder&order_phases=3" class="btn btn-link" style="text-decoration: none;color: black; font-size: large;">Pending</a>
+              <a href="?manageorder&order_phases=4" class="btn btn-link" style="text-decoration: none;color: black; font-size: large;">To Ship</a>
+              <a href="?manageorder&order_phases=5" class="btn btn-link" style="text-decoration: none;color: black; font-size: large;">Delivered</a>
+              <a href="?manageorder&order_phases=0" class="btn btn-link" style="text-decoration: none;color: black; font-size: large;">Cancelled</a>
         </div>
 
         <div class="container-fluid">
@@ -210,12 +212,12 @@ if(isset($_GET['logout'])){
                                                 , o.gcash_account_name
                                                 , o.gcash_account_no
                                                 , o.gcash_amount_sent
-                                             FROM `orders` as o
-                                             JOIN `payment_method` as pm
+                                             FROM orders as o
+                                             JOIN payment_method as pm
                                                ON o.payment_method = pm.payment_method_id
-                                             JOIN `order_phase_status` as op
+                                             JOIN order_phase_status as op
                                                ON o.order_phase_status = op.order_phase_id
-                                             JOIN `users` as ui
+                                             JOIN users as ui
                                                ON o.user_id = ui.user_id
                                             WHERE ui.user_type = 'C'
                                               AND ui.user_status = 'A'
@@ -280,8 +282,8 @@ if(isset($_GET['logout'])){
                                                               , p.pdt_img
                                                               , p.pdt_price
                                                               , o.pdt_qty
-                                                            FROM `orders` as o
-                                                            JOIN `products` as p
+                                                            FROM orders as o
+                                                            JOIN products as p
                                                             ON o.pdt_id = p.pdt_id
                                                             WHERE o.order_ref_no = '$curr_order_ref_no'";
 

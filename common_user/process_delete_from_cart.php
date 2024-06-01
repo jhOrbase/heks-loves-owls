@@ -12,7 +12,7 @@
                                         AND order_phase_status = '1';";
         $sql_execute = mysqli_query($conn, $sql_delete_from_cart);
         if($sql_execute){
-            header("location: index.php?page=home&msg=Cart item removed.");
+            header("location: index.php?page=cart&msg=Cart item removed.");
         }
     }
 

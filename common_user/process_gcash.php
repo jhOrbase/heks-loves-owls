@@ -18,30 +18,29 @@ if(isset($_POST['o_order_ref_no'])){
     $total_amt_to_pay = $_POST['o_total_amt_to_pay'];
     
     if($total_amt_to_pay > $gcash_amt_sent){
-        header("location: index.php?page=home&msg=Amount is Insufficient.");
+        header("location: index.php?page=cart&msg=Amount is Insufficient.");
         die();
     }
         
-    $sql_gcash_update_order = "UPDATE `orders`
-                            SET `order_phase_status` = 2
-                              , `order_ref_no` = '$ord_ref_no'
-                              , `payment_method` = '$payment_method'
-                              , `alternate_address` = '$alt_address'
-                              , `shipping_id` = '$shipping_id'
-                              , `gcash_ref_no` = '$gcash_ref_no'
-                              , `gcash_account_name` = '$gcash_acc_name'
-                              , `gcash_account_no` = '$gcash_acc_no'
-                              , `gcash_amount_sent` = '$gcash_amt_sent'
-                          WHERE `user_id` = '$user_id' 
-                            AND `order_phase_status` = '1';";
+    $sql_gcash_update_order = "UPDATE orders
+                            SET order_phase_status = 2
+                              , order_ref_no = '$ord_ref_no'
+                              , payment_method = '$payment_method'
+                              , alternate_address = '$alt_address'
+                              , shipping_id = '$shipping_id'
+                              , gcash_ref_no = '$gcash_ref_no'
+                              , gcash_account_name = '$gcash_acc_name'
+                              , gcash_account_no = '$gcash_acc_no'
+                              , gcash_amount_sent = '$gcash_amt_sent'
+                          WHERE user_id = '$user_id' 
+                            AND order_phase_status = '1';";
 
     $execute_gcash_update_order = mysqli_query($conn, $sql_gcash_update_order);
     
-    if($execute_gcash_update_order == 2){ //payment_method_id of gcash in db is 2
-        header("location: index.php?page=home&msg=1");
+    if($execute_gcash_update_order == 2){
+        header("location: index.php?page=cart&msg=1");
     }
     else{
-        header("location: index.php?page=home&msg=2");
+        header("location: index.php?page=cart&msg=2");
     }
 }
-

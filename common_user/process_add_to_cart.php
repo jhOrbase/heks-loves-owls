@@ -17,7 +17,7 @@ if(isset($_GET['pdt_id'])){
     $execute_cart_products = mysqli_query($conn, $sql_add_to_cart);
     
     if($execute_cart_products){
-        header("location: index.php?page=home&cart_status=product_{$pdt_id}_added_to_cart"); 
+        header("location: index.php?page=cart&cart_status=product_{$pdt_id}_added_to_cart"); 
         //exit(); 
     }
 }

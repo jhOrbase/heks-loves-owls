@@ -1,0 +1,14 @@
+table {
+    caption-side: bottom;
+    border-collapse: collapse;
+}
+
+.container{
+    border-style: solid;
+    margin-top: 15vh;
+}
+
+.col-6 {
+    flex: 0 0 auto;
+    width: 100%;
+}

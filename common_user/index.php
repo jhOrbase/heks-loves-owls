@@ -33,13 +33,15 @@ session_start();
                 if($_GET['page'] == 'home'){ ?>
 
     <?php include_once "../additional_header.php"; ?>
+    <?php include_once "../carousel.php"; ?>
+
 
         <!--===============Display Products=================-->
 
    <div class="container-fluid">
         <div class="row">
         <?php                                
-               $sql_get_products_hp = "SELECT * FROM `products` 
+               $sql_get_products_hp = "SELECT * FROM products 
                                             WHERE `pdt_status`='A' 
                                                 order by pdt_id ASC";
 
@@ -73,18 +75,26 @@ session_start();
                                     </div>  
                                 </div>
         <?php } ?>     
-        </div><!---row-->
+
+            </div><!---row-->
+        </div><!--container-fluid-->
+
+        <?php include_once "../bottompic.php"; ?>
+        <div class="bottom-border">
+
     <?php }   /*--page=home--*/ 
 
     else if($_GET['page'] == 'cart'){?>
 
-        <!--============= Reference Number & checkout ===============-->
+    <div class="container-fluid">
 
-         <div class="col-4">
+        <!--============= Reference Number & checkout ===============-->
+    <div class="row">
+         <div class="col-4" style="border: 2px solid;margin-left: 10vh;">
                         <?php
                             if(isset($_GET['checkout'])){ 
                         ?>
-                                <h3 class="card-title">Order Summary</h3> <!--checkout-->
+                                <h3 class="card-title" style="font-family: Lato; text-align: center;">Order Summary</h3> <!--checkout-->
                                 <div class="card-body">
 
                                     <?php
@@ -97,8 +107,8 @@ session_start();
                                                             , o.pdt_qty 
                                                             , o.orders_date_added
                                                             , o.order_id
-                                                        FROM `orders` as o
-                                                        JOIN `products` as p
+                                                        FROM orders as o
+                                                        JOIN products as p
                                                         ON (o.pdt_id = p.pdt_id)
                                                         WHERE o.user_id='$c_user_id' 
                                                         AND o.order_phase_status='1'";
@@ -136,14 +146,14 @@ session_start();
                                     <div class="mt-3">
 
                                         <input type="text" hidden name="o_total_amt_to_pay" value="<?php echo $total_amt; ?>">
-                                    <label for="">Ship to this Address:</label>
+                                    <label for=""  style="font-weight: bold;">Ship to this Address:</label>
                                         <input type="text" class="form-control mb-3" placeholder="This is Optional" name="o_alt_address">
-                                    <label for="" class="form-label">Payment Method:</label> 
+                                    <label for="" class="form-label" style="font-weight: bold;">Payment Method:</label> 
 
                                         <select name="o_payment_method" id="" class="form-select mb-3">
                                             <?php  
                                             $sql_get_payment_method = "SELECT *
-                                                                         FROM `payment_method`;";
+                                                                         FROM payment_method;";
 
                                             $payment_method_result = mysqli_query($conn, $sql_get_payment_method);
 
@@ -153,11 +163,11 @@ session_start();
                                             ?>
                                         </select>
                                         
-                                        <label for="">Shipping Options:</label>
+                                        <label for="" style="font-weight: bold;">Shipping Options:</label>
 
                                             <select name="o_ship_option" class="form-select mb-2" id="">
                                                 <?php  
-                                                $sql_get_shipping_method = "SELECT * FROM `shipping`";
+                                                $sql_get_shipping_method = "SELECT * FROM shipping";
 
                                                 $shipping_method_result = mysqli_query($conn, $sql_get_shipping_method);;
 
@@ -198,10 +208,12 @@ session_start();
 
                     }
                     ?>      
-
+</div><!----col-4-->
         <!--===============Display Cart =================-->
-            
-            <h6 class="display-6">Cart</h6>
+    <div class="col-5">       
+        <div class="container" style="border: 2px solid; margin-left: 5vh;">
+            <h5 class="display-6" style="font-family: Lato;"><ion-icon name="cart"></ion-icon>Cart</h5>
+            <hr>
                 <?php 
 
                     $sql_get_cart_products = "SELECT p.pdt_name
@@ -211,8 +223,8 @@ session_start();
                                                 , o.pdt_qty
                                                 , o.orders_date_added
                                                 , o.order_id
-                                             FROM `orders` as o
-                                             JOIN `products` as p
+                                             FROM orders as o
+                                             JOIN products as p
                                                ON (o.pdt_id = p.pdt_id)
                                             WHERE (o.user_id='$c_user_id')
                                              AND o.order_phase_status='1'";
@@ -228,13 +240,15 @@ session_start();
                                    <td> <?php echo "Php " . number_format($cart['pdt_price'] * $cart['pdt_qty'],2); ?> </td>
                                    <td> <a href="process_delete_from_cart.php?delete_from_cart=<?php echo $cart['order_id'];?>" class="btn btn-danger btn-sm">x</a> </td>
                                </tr>
-        </div><!----col-4-->
+        
                         <?php }
                     echo "</table>";
                     ?>
-                    <hr>
-                   <a href="?page=cart&checkout" class="btn btn-warning">Checkout</a>
-
+                    <!-- <hr> -->
+                   <a href="?page=cart&checkout" class="btn btn-warning" style="margin-bottom: 3vh;">Checkout</a>
+        </div><!--col-5-->
+    </div>
+</div><!--row-->
     <?php } /*page=cart*/
 
         /*=============== MY ORDERS PAGE =================*/
@@ -253,10 +267,10 @@ session_start();
                                                 , o.gcash_account_name
                                                 , o.gcash_account_no
                                                 , o.gcash_amount_sent
-                                             FROM `orders` as o
-                                             JOIN `payment_method` as pm
+                                             FROM orders as o
+                                             JOIN payment_method as pm
                                                ON o.payment_method = pm.payment_method_id /*payment table*/
-                                             JOIN `order_phase_status` as ops 
+                                             JOIN order_phase_status as ops 
                                                ON o.order_phase_status = ops.order_phase_id
                                             WHERE o.user_id = '$c_user_id' ";      
                     $sql_user_result_orders = mysqli_query($conn, $sql_get_user_order);
@@ -309,8 +323,8 @@ session_start();
                                                                          , p.pdt_name
                                                                          , p.pdt_price
                                                                          , o.pdt_qty
-                                                                      FROM `orders` as o
-                                                                      JOIN `products` as p
+                                                                      FROM orders as o
+                                                                      JOIN products as p
                                                                         ON o.pdt_id = p.pdt_id
                                                                      WHERE o.user_id = '$c_user_id' 
                                                                          AND o.order_ref_no = '$curr_order_ref_no'";
@@ -352,12 +366,15 @@ session_start();
                     </div>
                 <?php }
     } /*--page--*/
+
     else {
         
     }
     ?>
-
+    
+    
     </div><!--container-fluid-->
+
 </body>
    <script src="../js/bootstrap.js"></script>
 </html>

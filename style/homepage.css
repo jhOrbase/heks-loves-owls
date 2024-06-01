@@ -2,7 +2,7 @@ body { /*wag gagalawin*/
   margin: 0;
   padding: 0;
   position: relative;
-  min-height: 800vh; 
+  min-height: 600vh; 
   /* max-width: fit-content;*/
 }
 
@@ -66,6 +66,7 @@ body { /*wag gagalawin*/
   display: flex; 
   align-items: center; 
   justify-content: space-between;
+  padding: 10px 0 0 7vh;
 }
 
 /*Explore wristique collection*/
@@ -75,14 +76,14 @@ body { /*wag gagalawin*/
   color:rgb(53, 87, 35);
   font-size: 36px;
   font-weight: bold;
-  padding: 10vh 0 0 0;
-  margin: 0 2vh 0 20vh;
+  padding: 20vh 0 0 0;
+  margin: 0 2vh 0 10vh;
 }
 
 .content2 {
   text-align: left;
   color:rgb(53, 87, 35);
-  padding: 10vh 0 0 0;
+  padding: 17vh 0 0 0;
   margin: 0 20vh 0 20px;
 }
 
@@ -94,7 +95,10 @@ body { /*wag gagalawin*/
 }
 
 .content2-text2 {
-  text-align: left; 
+  text-align: right; 
+  margin-right:60vh;
+  margin-top: 9vh;
+  padding: 5vh 0 0 0;
   font-family: 'Open Sans', sans-serif;
   font-weight: bold;
   color: rgb(53, 87, 35); 
@@ -240,4 +244,74 @@ a.beforeAfter img:nth-of-type(2) {
 a.beforeAfter:hover img:nth-of-type(1) {
   clip: rect(0, 0, 434px, 0);
   opacity: 0;
+}
+
+.card-title-order{
+  background-color: red;
+}
+
+.card-footer-1{
+  padding:.50rem 1rem;
+  background-color: rgba(0, 0, 0, .03);
+  border-top: 1px solid rgba(0, 0, 0, .125);
+}
+
+
+/* carousel */
+.carousel-inner img {
+  margin-top: 20vh;
+}
+
+/* Wristique brings a fresh new look to some of its most new iconic models. */
+
+.latest-content {
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between;
+  margin-top: 19vh;
+  margin-bottom: 19vh;
+  padding-left: 1vh;
+  padding-right: 2vh;
+
+}
+.latest2 {
+  text-align: left;
+  font-family: 'Open Sans', sans-serif;
+  color:rgb(76, 121, 52, 1);
+  font-size: 30px;
+  font-weight: bold;
+  margin: 0 2vh 0 10vh;
+}
+
+.latest1 {
+  text-align: left;
+  color:rgb(53, 87, 35);
+  margin: 0 2vh 0 10vh;
+}
+
+.latest1-text {
+  text-align: left;
+  font-family: 'Helvetica', sans-serif;
+  font-weight: normal;
+  color: rgb(96, 96, 96);
+}
+
+.bottom-border { /*wag gagalawin*/
+  position: bottom; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8vh; 
+  background-color: rgb(76, 121, 52, 1); 
+  padding-top: 6px;
+}
+
+.container-fluid-page{
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 15px;
+
 }

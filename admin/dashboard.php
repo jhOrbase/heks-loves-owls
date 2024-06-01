@@ -9,14 +9,16 @@ include_once "../dbconnect.php";
     <link rel="stylesheet" href="../style/dashboard.css">
 </head>
 <body>
-<div class ="border-top-1">Reports</div>  <!--palitan or tanggalin depende sainyo-->
+<!-- <div class ="border-top-1">Reports</div>  palitan or tanggalin depende sainyo -->
    <div class="container">
        <div class="row">
         <!--==================Per-Product Report===================-->
-           <div class="col-6 mb-4">
+           <div class="col-6 ">
+
                 <div class="card ps-1">
-                    <h3 class="card-title">Total Sales</h3> 
-                       <small class="small">Per Product</small> 
+                    <h3 class="title">Per Product</h3>
+                    <div class="bottom-border-line"></div>
+                    <!-- <div class="title">Per Product</div>    -->
                        <div class="card-body">
                            <h1 class="display-1">
                                 <?php
@@ -61,10 +63,10 @@ include_once "../dbconnect.php";
                    </div>
                 </div>
         <!--==================Per-Day Report===================-->
-           <div class="col-6 mb-4">
+           <div class="col-6 ">
                    <div class="card ps-1">
-                       <h3 class="card-title">Total Sales</h3> <!--palitan nyo nalang, same syntax every table-->
-                       <small class="small">Per Day</small>
+                       <h3 class="title">Per Day</h3>
+                    <div class="bottom-border-line"></div>
                        <div class="card-body">
                            <h1 class="display-1">
                            <?php
@@ -112,10 +114,10 @@ include_once "../dbconnect.php";
                    </div>
            </div>
             <!--==================Per-Order Report===================-->
-           <div class="col-6 mb-4">
+           <div class="col-6 ">
                    <div class="card ps-1">
-                       <h3 class="card-title">Total Sales</h3>
-                       <small class="small">Per Order</small>
+                   <h3 class="title">Per Order</h3>
+                    <div class="bottom-border-line"></div> 
                        <div class="card-body">
                            <h1 class="display-1">
                            <?php 
@@ -162,10 +164,10 @@ include_once "../dbconnect.php";
                    </div>      
            </div>
         <!--==================Per-User Report===================-->
-           <div class="col-6 mb-4">
+           <div class="col-6 ">
                    <div class="card ps-1">
-                       <h3 class="card-title">Total Sales</h3>
-                       <small class="small">Per User</small>
+                   <h3 class="title">Per User</h3>
+                    <div class="bottom-border-line"></div> 
                        <div class="card-body">
                            <h1 class="display-1">
                                 <?php
@@ -222,17 +224,17 @@ include_once "../dbconnect.php";
                    </div>
            </div>
         <!--==================Yesterday vs Today Report===================-->
-        <div class="col-6 mb-4">
+        <div class="col-6 ">
             <div class="card ps-1">
-                <h3 class="card-title">Total Sales</h3> <!--palitan nyo nalang, same syntax every table-->
-                    <small class="small">Yesterday vs Today's Sales</small>                 
+            <h3 class="title">Yesterday vs Today's Sales</h3>
+                    <div class="bottom-border-line"></div>               
                     <div class="card-body">
                             <h1 class="display-1">
                                 <table class="table table-striped">
                                         <?php
                         /*sql query for yesterday*/ 
                                         $yesterday_sql = "SELECT 
-                                                            SUM(o.pdt_qty) AS total_pdt_qty,
+                                                            SUM(o.pdt_qty) AS total_pdt_qty_yesterday,
                                                             SUM(p.pdt_price * o.pdt_qty) AS total_amt_yesterday
                                                         FROM 
                                                             orders AS o
@@ -251,14 +253,14 @@ include_once "../dbconnect.php";
                                         <tr>
                                             <!--row-->
                                             <td><?php echo date('Y-m-d', strtotime('-1 day'));?></td>
-                                            <td><?php echo $yesterday_rec['total_pdt_qty'];?></td>
+                                            <td><?php echo $yesterday_rec['total_pdt_qty_yesterday'];?></td>
                                             <td><?php echo "₱". number_format($yesterday_rec['total_amt_yesterday'],2);?></td>
                                         </tr>
                                         
                                     <?php
                         /*sql query for today*/
                                         $today_sql = "SELECT 
-                                                        SUM(o.pdt_qty) AS total_pdt_qty,
+                                                        SUM(o.pdt_qty) AS total_pdt_qty_today,
                                                         SUM(p.pdt_price * o.pdt_qty) AS total_amt_today
                                                     FROM 
                                                         orders AS o
@@ -278,7 +280,7 @@ include_once "../dbconnect.php";
                                         <tr>
                                             <!--row-->
                                             <td><?php echo date('Y-m-d');?></td>
-                                            <td><?php echo $today_rec['total_pdt_qty'];?></td>
+                                            <td><?php echo $today_rec['total_pdt_qty_today'];?></td>
                                             <td><?php echo "₱". number_format($today_rec['total_amt_today'],2);?></td>
                                         </tr>                 
                                                     <!--simple if-else statements to compare the results-->
@@ -293,6 +295,11 @@ include_once "../dbconnect.php";
                                                             <small class="float-end"><?php echo "Today's sale was better";?></small> 
                                                         </td>
                                                     <?php } 
+                                                    else if(($yesterday_rec['total_amt_yesterday'] == '0' || $today_rec['total_amt_today'] == '0')){ ?>
+                                                        <td colspan=3 class="bg-light"> 
+                                                            <small class="float-end"><?php echo "Today's sale was better";?></small> 
+                                                        </td>
+                                                    <?php }
                                                     else { ?>
                                                         <td colspan=3 class="bg-light"> 
                                                             <small class="float-end"><?php echo "Yesterday's and Today's sales are equal";?></small> 
@@ -304,10 +311,10 @@ include_once "../dbconnect.php";
                     </div>
                 </div>
         <!--==================Yearly Sales===================-->
-        <div class="col-6 mb-4">
+        <div class="col-6 ">
     <div class="card ps-1">
-        <h3 class="card-title">Total Sales</h3> <!--palitan nyo nalang, same syntax every table-->
-            <small class="small">Per Year</small>                 
+                <h3 class="title">Yearly Sales</h3>
+                    <div class="bottom-border-line"></div>                
             <div class="card-body">
                 <h1 class="display-1">
                     <table class="table table-striped">
@@ -318,9 +325,9 @@ include_once "../dbconnect.php";
                         </tr>
                         <?php
                         $sql_get_yearly = "SELECT 
-                                            YEAR(o.orders_date_added) AS year,
-                                            SUM(o.pdt_qty) AS total_pdt_qty,
-                                            SUM(p.pdt_price * o.pdt_qty) AS yearly_total_amt
+                                            YEAR(o.orders_date_added) AS date_year,
+                                            SUM(o.pdt_qty) AS total_pdt_qty_year,
+                                            SUM(p.pdt_price * o.pdt_qty) AS total_amt_yearly
                                         FROM 
                                             orders AS o
                                         JOIN 
@@ -337,13 +344,13 @@ include_once "../dbconnect.php";
                         while($yearly_rec = mysqli_fetch_assoc($yearly_result)){?>
                             <tr>
                                 <!--row-->
-                                <td><?php echo $yearly_rec['year'];?></td>
-                                <td><?php echo $yearly_rec['total_pdt_qty'];?></td>
-                                <td><?php echo "₱". number_format($yearly_rec['yearly_total_amt'],2);?></td>
+                                <td><?php echo $yearly_rec['date_year'];?></td>
+                                <td><?php echo $yearly_rec['total_pdt_qty_year'];?></td>
+                                <td><?php echo "₱". number_format($yearly_rec['total_amt_yearly'],2);?></td>
                             </tr>
                         <?php 
-                            $overall_pdt_qty += $yearly_rec['total_pdt_qty'];
-                            $overall_total_amt += $yearly_rec['yearly_total_amt'];
+                            $overall_pdt_qty += $yearly_rec['total_pdt_qty_year'];
+                            $overall_total_amt += $yearly_rec['total_amt_yearly'];
                         ?>
                         <?php }?>
                                 <td><strong>Overall</strong></td>

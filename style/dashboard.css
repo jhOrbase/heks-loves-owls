@@ -1,7 +1,46 @@
-    .border-top-1 { /*kinuha ko to sa css, adjust if needed tas delete nyo nalang comment lines ko na ganto*/
-        background-color: rgb(53, 87, 35);
-        color:azure;
-        text-align: center;
-        height: auto;
-        font-size: 25px;   
-    }
+.border-top-1 { 
+    color:azure;
+    text-align: center;
+    height: auto;
+    font-size: 25px;   
+    background-color: black;
+}
+
+.col-6 {
+    flex: 0 0 auto;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.row{
+--bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1* var(--bs-gutter-y));
+    margin-right: calc(-0.5* var(--bs-gutter-x));
+    margin-left: calc(-0.5* var(--bs-gutter-x));
+    max-width: 65%;
+    margin-left: 30vh;
+}
+
+.title {
+    font-size: 20px;
+    font-family: 'Fairplay Display', sans-serif;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.card-title{
+    text-align: center;
+    font-family: 'Fairplay Display', sans-serif;
+}
+
+
+
+.bottom-border-line{
+    border-bottom: 1px solid black;
+    /* margin-top: 2px;
+    margin-bottom: 5px; */
+
+}
