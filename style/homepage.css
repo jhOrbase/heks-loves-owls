@@ -1,0 +1,243 @@
+body { /*wag gagalawin*/
+  margin: 0;
+  padding: 0;
+  position: relative;
+  min-height: 800vh; 
+  /* max-width: fit-content;*/
+}
+
+.top-border { /*wag gagalawin*/
+  position: relative; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8vh; 
+  background-color: rgb(76, 121, 52, 1); 
+  padding-top: 6px;
+}
+
+.additional-border { /*wag gagalawin*/
+  position: 0; 
+  background-color: rgba(4,4,4) !important;
+  color: white;
+  border-width: 120vw;
+  height: 500px;
+}
+
+.bottom-border {
+  background-color: rgb(76, 122, 52);
+  text-align: center;
+  color: white;
+  font-size: 13px;
+  padding: 10px ;
+  padding-top: 1vh;
+  border-width: 100vw;
+}
+
+.title-content { /*wag gagalawin*/
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+}
+
+.title_text { /*wag gagalawin*/
+  margin: 0 50px 0 0;
+  font-size: 50px;
+  text-align: center;
+  line-height: 60px;
+  font-family: 'Plyfair Display', serif;
+}
+
+.title_text2 { /*wag gagalawin*/
+  text-align: right; 
+  margin: 400px 0 0 140px;
+  margin-left: 140px; 
+  font-family: 'Open Sans Light', sans-serif; 
+  font-size: 18px;  
+}
+
+.img { /*wag gagalawin*/
+  margin-left: 10px;  
+  max-width: 70%; 
+  height:500px;
+}
+
+.container-content {
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between;
+}
+
+/*Explore wristique collection*/
+.content1 {
+  text-align: left;
+  font-family: 'Open Sans', sans-serif;
+  color:rgb(53, 87, 35);
+  font-size: 36px;
+  font-weight: bold;
+  padding: 10vh 0 0 0;
+  margin: 0 2vh 0 20vh;
+}
+
+.content2 {
+  text-align: left;
+  color:rgb(53, 87, 35);
+  padding: 10vh 0 0 0;
+  margin: 0 20vh 0 20px;
+}
+
+.content2-text1 {
+  text-align: left;
+  font-family: 'Helvetica', sans-serif;
+  font-weight: normal;
+  color: rgb(96, 96, 96);
+}
+
+.content2-text2 {
+  text-align: left; 
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold;
+  color: rgb(53, 87, 35); 
+  margin-top: 15px;
+}
+
+
+/*=============Order styles=============*/
+
+.img-fluid {
+  max-width: 50% !important;
+  height: auto;
+}
+
+/*changes*/
+h1, .h1 {
+  margin: 5vh 0 2vh 0;
+  text-align: center;
+  font-size: calc(1.375rem + 1.5vw);
+}
+
+.card {
+  /* height: 10vh; */
+  margin: 10px;
+  --bs-card-spacer-y: 1rem;
+  --bs-card-spacer-x: 1rem;
+  --bs-card-title-spacer-y: 0.5rem;
+  --bs-card-title-color: ;
+  --bs-card-subtitle-color: ;
+  --bs-card-border-width: var(--bs-border-width);
+  --bs-card-border-color: var(--bs-border-color-translucent);
+  --bs-card-border-radius: var(--bs-border-radius);
+  --bs-card-box-shadow: ;
+  --bs-card-inner-border-radius: calc(var(--bs-border-radius) - (var(--bs-border-width)));
+  --bs-card-cap-padding-y: 0.5rem;
+  --bs-card-cap-padding-x: 1rem;
+  --bs-card-cap-bg: rgba(var(--bs-body-color-rgb), 0.03);
+  --bs-card-cap-color: ;
+  --bs-card-height: ;
+  --bs-card-color: ;
+  --bs-card-bg: var(--bs-body-bg);
+  --bs-card-img-overlay-padding: 1rem;
+  --bs-card-group-margin: 0.75rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: var(--bs-card-height);
+  color: var(--bs-body-color);
+  word-wrap: break-word;
+  background-color: var(--bs-card-bg);
+  background-clip: border-box;
+  border: var(--bs-card-border-width) solid var(--bs-card-border-color);
+  border-radius: var(--bs-card-border-radius);
+}
+
+.flex-container_btn {
+  display: flex;
+  justify-content: center;
+  justify-content: space-around;
+}
+
+.pad {
+  padding-top: 15vh;
+}
+
+
+.row > .column {
+  padding: 5px;
+}
+
+.row {
+  margin: 15px;
+}
+
+.column {
+  float: left;
+  width: 33.33%;
+  display: none;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.content {
+  background-color: white;
+  padding: 10px;
+}
+
+.show {
+  display: block;
+}
+
+.btn {
+  border: none;
+  outline: none;
+  padding: 12px 16px; 
+  /*background-color: white;*/
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #ddd;
+}
+
+.btn.active {
+  background-color: #666;
+  color: white;
+}
+
+a.beforeAfter {
+  position: relative;
+  display: block;
+  overflow: hidden; 
+  cursor: pointer;
+  width: 390px;
+  height: 290px;
+}
+
+a.beforeAfter img {
+  position: absolute;
+  text-align: center;
+  left: 0;
+  top: 0; 
+  width: 100%;
+  height: 100%;
+  -moz-transition: all 0.5s ease;
+  -webkit-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  z-index: 2;
+  clip: rect(0, 300px, 288px, 0);
+}
+
+a.beforeAfter img:nth-of-type(2) {
+  z-index: 1;
+}
+
+a.beforeAfter:hover img:nth-of-type(1) {
+  clip: rect(0, 0, 434px, 0);
+  opacity: 0;
+}

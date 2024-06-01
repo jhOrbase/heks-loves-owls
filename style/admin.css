@@ -1,0 +1,74 @@
+.border-top-0 {
+    border-top: 0 !important;
+    position: relative;
+    border-width: 100vw;
+    height: 30vh;
+    /*background-color: rgb(18, 70, 18);*/
+    background-color: black;
+    text-align: center;
+    color:azure;
+    padding: 6vh 0 0 0;
+    font-size: 45px;
+    font-weight: bold;
+}
+
+.border-light-subtle {
+    border-color: var(--bs-light-border-subtle) !important;
+    border-bottom: 1px solid black;
+  }
+
+  .bg-success {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-success-rgb), var(--bs-bg-opacity)) !important;
+}
+
+  .text-light {
+    --bs-text-opacity: 1;
+    color: rgba(var(--bs-light-rgb), var(--bs-text-opacity)) !important;
+}
+
+.col-4 {
+    flex: 0 0 auto;
+    /*width: 33.33333333%;*/
+    max-width: 35%;
+}
+
+.col-8 {
+    flex: 0 0 auto;
+    width: 66.6%;
+    padding: 16px 20px 0 20px;
+}
+
+.tr {
+    display: table-row;
+    vertical-align: inherit;
+    unicode-bidi: isolate;
+    border-color: inherit;
+}
+
+* {
+    font-family: 'Playfair Display', serif;
+}
+
+h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
+    margin-top: 25px;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--bs-heading-color);
+}
+
+.table > :not(caption) > * > * {
+    padding: 0.5rem 0.5rem;
+    
+    text-align: center;
+    color: var(--bs-table-color-state, var(--bs-table-color-type, var(--bs-table-color)));
+    background-color: var(--bs-table-bg);
+    border-bottom-width: var(--bs-border-width);
+    box-shadow: inset 0 0 0 9999px var(--bs-table-bg-state, var(--bs-table-bg-type, var(--bs-table-accent-bg)));
+}
+
+label {
+    display: inline-block;
+    font-size: 16px;
+}

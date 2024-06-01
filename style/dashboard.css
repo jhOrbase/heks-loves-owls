@@ -1,0 +1,7 @@
+    .border-top-1 { /*kinuha ko to sa css, adjust if needed tas delete nyo nalang comment lines ko na ganto*/
+        background-color: rgb(53, 87, 35);
+        color:azure;
+        text-align: center;
+        height: auto;
+        font-size: 25px;   
+    }
