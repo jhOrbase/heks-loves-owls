@@ -17,20 +17,6 @@
         </a>
     </div>
 </div>
-        
-            <!-- <a href="?page=home" class="btn btn-link"style= "text-decoration: none;
-            color: white;
-            font-family: 'Montserrat'; "><ion-icon name="home-outline"></ion-icon></a>
-            <a href="?page=cart" class="btn btn-link" style= "text-decoration: none;
-            color: white;
-            font-family: 'Montserrat';"><ion-icon name="cart-outline"></ion-icon></a>
-            <a href="?page=myorder" class="btn btn-link" style= "text-decoration: none;
-            color: white;
-            font-family: 'Montserrat';"><ion-icon name="bag-outline"></ion-icon>
-            <a href="?logout" class="btn btn-link" style= "text-decoration: none;
-            color: white;
-            font-family: 'Montserrat';"><ion-icon name="log-out-outline"></ion-icon></a> -->
-
         </div>
 
 
