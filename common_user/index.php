@@ -84,68 +84,87 @@ session_start();
 
     <?php }   /*--page=home--*/ 
 
-    else if($_GET['page'] == 'cart'){?>
+            else if($_GET['page'] == 'cart'){?>
 
-    <div class="container-fluid">
+            <div class="container-fluid">
 
         <!--============= Reference Number & checkout ===============-->
     <div class="row">
-         <div class="col-4" style="border: 2px solid;margin-left: 10vh;">
-                        <?php
-                            if(isset($_GET['checkout'])){ 
-                        ?>
-                                <h3 class="card-title" style="font-family: Lato; text-align: center;">Order Summary</h3> <!--checkout-->
-                                <div class="card-body">
+        <div class="col-4" style="border: 2px solid;margin-left: 10vh;">
+                <?php
+                    if (isset($_GET['checkout'])) { 
+                ?>
 
-                                    <?php
-                                        $order_no = gen_order_ref_number(8); //generates a random order reference number (db file)
+                    <h3 class="card-title" style="font-family: Lato; text-align: center;">Order Summary</h3> <!--checkout-->
+                        <div class="card-body">
 
-                                        $sql_checkout= "SELECT p.pdt_name
-                                                            , p.pdt_price
-                                                            , p.pdt_description
-                                                            , p.pdt_img
-                                                            , o.pdt_qty 
-                                                            , o.orders_date_added
-                                                            , o.order_id
-                                                        FROM orders as o
-                                                        JOIN products as p
-                                                        ON (o.pdt_id = p.pdt_id)
-                                                        WHERE o.user_id='$c_user_id' 
-                                                        AND o.order_phase_status='1'";
-                                                    
-                                        $result_checkout = mysqli_query($conn,$sql_checkout);
+                                <?php
+                                $order_no = gen_order_ref_number(8); //generates a random order reference number (db file)
+
+                                $sql_checkout = "SELECT p.pdt_name
+                                                    , p.pdt_price
+                                                    , p.pdt_description
+                                                    , p.pdt_img
+                                                    , o.pdt_qty 
+                                                    , o.orders_date_added
+                                                    , o.order_id
+                                                    , o.shipping_fee 
+                                                FROM orders as o
+                                                JOIN products as p
+                                                ON o.pdt_id = p.pdt_id
+                                                WHERE o.user_id = '$c_user_id' 
+                                                AND o.order_phase_status = '1'";
+                                $result_checkout = mysqli_query($conn, $sql_checkout);
                                 ?>
+
                                 <div class="alert alert-light">
                                     Order Reference Number: <?php echo $order_no; ?>
                                     <br>
-                                    Receiver: <?php echo $_SESSION['users_fullname'] ; ?>
+                                    Receiver: <?php echo $_SESSION['users_fullname']; ?>
                                     <br>
                                     Address: <?php echo $_SESSION['users_address']; ?>
                                 </div>
 
                                 <ul class="list-group">
-                                    <?php
-                                
+                                <?php
                                     $total_amt = 0.00; //initialize total amount
+                                    $shipping_fee = 50.00; // set shipping fee to 50.00
+                                    $total_amt_with_shipping = 0.00;
 
                                     //adds up every loop of the result.
-                                    while ($full_order = mysqli_fetch_assoc($result_checkout)){
-                                    
-                                    $total_amt = $total_amt + ($full_order['pdt_price'] * $full_order['pdt_qty']);
-                                    ?>
+                                    while ($full_order = mysqli_fetch_assoc($result_checkout)) { 
+                                        $total_amt += $full_order['pdt_price'] * $full_order['pdt_qty']; ?>
                                         <li class="list-group-item">
-                                        <?php echo $full_order['pdt_name'] . " - Php " . number_format($full_order['pdt_price'],2) . " x " . $full_order['pdt_qty'] . " pcs";?></li>
-                                    <?php } ?>
+                                            <?php echo $full_order['pdt_name'] . " - Php " . number_format($full_order['pdt_price'], 2) . " x " . $full_order['pdt_qty'] . " pcs"; ?>
+                                        </li>
+                                    <?php } 
+                                    $update_shipping_fee = "UPDATE orders AS o
+                                                            JOIN (
+                                                                SELECT MIN(order_id) as min_order_id
+                                                                FROM orders
+                                                                WHERE order_phase_status = '1'
+                                                                GROUP BY order_ref_no
+                                                            ) AS ou ON o.order_id = ou.min_order_id
+                                                                SET o.shipping_fee = 50.00
+                                                                WHERE o.user_id = '$c_user_id'";
+                                    $sql_result_update = mysqli_query($conn, $update_shipping_fee);
+                                ?>
+                                <?php
+                                    $total_amt_with_shipping = $total_amt + $shipping_fee;
+                                ?>
+                                <li class="list-group-item" style="padding-left: 25vh;">
+                                    <b>Total Amount: <?php echo "Php ". number_format($total_amt, 2);?></b>
+                                </li>
+                                <li class="list-group-item" style="padding-left: 31vh;">
+                                    +shipping: <b><?php echo "Php ". number_format($total_amt_with_shipping, 2);?></b>
+                                </li>
+                            </ul>
 
-                                    <li class="list-group-item">
-                                       <b> Total Amount to Pay: <?php echo "Php " . number_format($total_amt,2);?> </b>
-                                    </li>
-                                </ul>
 
                                 <form action="process_order.php" method="post">
                                     <div class="mt-3">
 
-                                        <input type="text" hidden name="o_total_amt_to_pay" value="<?php echo $total_amt; ?>">
+                                        <input type="text" hidden name="o_total_amt_to_pay" value="<?php echo $total_amt_with_shipping; ?>">
                                     <label for=""  style="font-weight: bold;">Ship to this Address:</label>
                                         <input type="text" class="form-control mb-3" placeholder="This is Optional" name="o_alt_address">
                                     <label for="" class="form-label" style="font-weight: bold;">Payment Method:</label> 
@@ -184,7 +203,8 @@ session_start();
                                 </form>
 
                             </div>
-                    <?php } ?>
+                            
+                    <?php } ?> <!--checkout-->
 
                    <?php
                     if(isset($_GET['msg'])){
@@ -208,10 +228,12 @@ session_start();
 
                     }
                     ?>      
-</div><!----col-4-->
-        <!--===============Display Cart =================-->
-    <div class="col-5">       
-        <div class="container" style="border: 2px solid; margin-left: 5vh;">
+        </div> <!--col-4 -->
+
+<!--===============Display Cart =================-->
+
+<div class="col-5">       
+    <div class="container" style="border: 2px solid; margin-left: 5vh;">
             <h5 class="display-6" style="font-family: Lato;"><ion-icon name="cart"></ion-icon>Cart</h5>
             <hr>
                 <?php 
@@ -246,15 +268,16 @@ session_start();
                     ?>
                     <!-- <hr> -->
                    <a href="?page=cart&checkout" class="btn btn-warning" style="margin-bottom: 3vh;">Checkout</a>
+            </div>
         </div><!--col-5-->
-    </div>
-</div><!--row-->
+</div> <!--container-fluid-->
+
     <?php } /*page=cart*/
 
         /*=============== MY ORDERS PAGE =================*/
 
        else if($_GET['page'] == 'myorder'){?>
-                    <div class="row">
+            <div class="row">
                     <?php
                         $sql_get_user_order = "SELECT DISTINCT 
                                                   o.order_ref_no
@@ -316,7 +339,8 @@ session_start();
                                      <small class="small">Gcash Amount Sent: <?php echo $rec['gcash_amount_sent'];?></small>
                                  </div>
                              <?php }
-                             ?>
+                             ?>       
+                            <!--=============Display orders===============-->
                                         <?php
                                                $sql_get_user_pdt_order = "SELECT 
                                                                            p.pdt_img
@@ -332,27 +356,31 @@ session_start();
                                               $sql_execute_pdt_order = mysqli_query($conn, $sql_get_user_pdt_order); ?>
 
                                         <div class="list-group">
-                                               <?php 
+                                                <?php
                                                     $total_amt = 0.00;
+                                                    $shipping_fee = 50.00; // set shipping fee to 50.00
+                                                    $total_amt_with_shipping = 0.00;
 
                                                     while($po = mysqli_fetch_assoc($sql_execute_pdt_order)){ 
-
-                                                    $total_amt = $total_amt + ($po['pdt_qty'] * $po['pdt_price']);
-                                                ?>
-                                                   <li class="list-group-item">
+                                                        $total_amt = $total_amt + ($po['pdt_qty'] * $po['pdt_price']);
+                                                    ?>
+                                                       <li class="list-group-item">
                                                               <img src="../webpics/<?php echo $po['pdt_img'];?>" width="40px" alt="" class="img-fluid">
                                                                <?php echo $po['pdt_name'] . " x ";?>
                                                                <?php echo $po['pdt_qty'] . " pcs <br>";?>
                                                               <small class="small float-end"> <?php echo "Php " . number_format($po['pdt_price'],2);?></small>
-                                                  </li>
-                                               <?php } ?>
-                                               
-                                               
-                                                </div>
-                                                <div class="card-footer">
-                                                    <span class="float-end"> Total Amount: <b> <?php echo "Php " . number_format($total_amt,2); ?> </b> </span> 
-                                                </div>
-                                               
+                                                        </li>
+                                                    <?php }
+                                                    $total_amt_with_shipping = $total_amt + $shipping_fee;?>
+
+                                                    <!-- display total amount and total amount with shipping -->
+                                                    <div class="card-footer">
+                                                        <small class="d-block float-end"> Amount: <?php echo "Php ". number_format($total_amt,2);?></small>
+                                                        <small class="d-block float-end">+shipping: <?php echo "Php ". number_format($shipping_fee,2);?></small>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <span class="d-block float-end"> Total Amount: <b> <?php echo "Php ". number_format($total_amt_with_shipping,2);?> </b> </span> 
+                                                    </div>
                                                     <?php if($rec['alternate_address'] != NULL){ ?>
                                                          <div class="card-footer">
                                                                <small class="small">
@@ -361,9 +389,10 @@ session_start();
                                                         </div>
                                                 <?php } ?>
                          </div>
+                         </div>
                      </div>
                     <?php } ?>
-                    </div>
+
                 <?php }
     } /*--page--*/
 
@@ -373,6 +402,7 @@ session_start();
     ?>
     
     
+    </div><!--row-->
     </div><!--container-fluid-->
 
 </body>
