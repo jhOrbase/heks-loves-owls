@@ -15,10 +15,14 @@ if(isset($_POST['o_order_ref_no'])){
     $gcash_acc_name = $_POST['o_gcash_acc_name'];
     $gcash_acc_no = $_POST['o_gcash_acc_no'];
     $gcash_amt_sent = $_POST['o_gcash_amt_sent'];    
-    $total_amt_to_pay = $_POST['o_total_amt_to_pay'];
+    $total_amt_with_shipping = $_POST['o_total_amt_to_pay'];
     
-    if($total_amt_to_pay > $gcash_amt_sent){
-        header("location: index.php?page=cart&msg=Amount is Insufficient.");
+    // if($total_amt_to_pay == $gcash_amt_sent){
+    //     header("location: index.php?page=cart&msg=Amount is Insufficient.");
+    //     die();
+    // }
+    if($total_amt_with_shipping != $gcash_amt_sent) { //returns true if the amt sent is the exact amount to pay
+        header("location: index.php?page=cart&msg=Please pay the exact amount.");
         die();
     }
         
