@@ -1,7 +1,7 @@
 <?php
 $servername= "localhost";
 $username = "root";
-$password = "";  
+$password = "315683";  
 $database = "wristiquedb";  
 
 /*=======Procedural Style Connection========*/

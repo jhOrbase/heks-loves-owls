@@ -23,10 +23,16 @@ if(isset($_GET['logout'])){
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../css/bootstrap.css"> 
     <link rel="stylesheet" href="../style/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>Admin</title>
 </head>
 <body>
     <div class="border-top-0" style="background-color: green">
+            <div class="logout-admin">
+                <a href="?logout" class="btn btn-link" style="text-decoration: none; color: white; font-size: large; margin-left: 155vh;">
+                    <i class="fa fa-sign-out-alt" style="margin-right: 8px; padding-bottom: 3vh; "></i> Log out
+                </a>
+            </div>
             <a href="#"  style="text-decoration: none; color: white; float: left; margin-left: 85vh; "> ADMIN PAGE</a><br>
             <a href="?manageproducts" class="btn btn-link" style="text-decoration: none; color: white; font-size: large;">Manage Products</a>
             <a href="?manageorder" class="btn btn-link" style="text-decoration: none; color: white; font-size: large;">Manage Orders</a>
@@ -144,8 +150,8 @@ if(isset($_GET['logout'])){
                             <td><?php echo $row['pdt_name'];?></td>
                             <td><?php echo $row['pdt_description'];?></td>
                             <td><?php echo "Php " . number_format($row['pdt_price'],2);?></td>
-                            <td> <a href="../admin/index.php?manageitems&update_product=<?php echo $row['pdt_id'];?>" class="btn btn-success">Update</a> </td>
-                            <td> <a href="../admin/index.php?manageitems&deactivate_product=<?php echo $row['pdt_id'];?>" class="btn btn-danger">Deactivate</a> </td>
+                            <td> <a href="../admin/index.php?manageproducts&update_product=<?php echo $row['pdt_id'];?>" class="btn btn-success">Update</a> </td>
+                            <td> <a href="../admin/index.php?manageproducts&deactivate_product=<?php echo $row['pdt_id'];?>" class="btn btn-danger">Deactivate</a> </td>
                         </tr>
                        <?php 
                        }
@@ -165,8 +171,8 @@ if(isset($_GET['logout'])){
                             <td><?php echo $row['pdt_name'];?></td>
                             <td><?php echo $row['pdt_description'];?></td>
                             <td><?php echo "Php " . number_format($row['pdt_price'],2);?></td>
-                            <td> <a href="../admin/index.php?manageitems&update_product=<?php echo $row['pdt_id'];?>" class="btn btn-success">Update</a> </td>
-                            <td> <a href="../admin/index.php?manageitems&activate_product=<?php echo $row['pdt_id'];?>" class="btn btn-info">Activate</a> </td>
+                            <td> <a href="../admin/index.php?manageproducts&update_product=<?php echo $row['pdt_id'];?>" class="btn btn-success">Update</a> </td>
+                            <td> <a href="../admin/index.php?manageproducts&activate_product=<?php echo $row['pdt_id'];?>" class="btn btn-info">Activate</a> </td>
                         </tr>
                        <?php 
                        }
@@ -275,7 +281,7 @@ if(isset($_GET['logout'])){
                               <?php  
                               $curr_order_ref_no = "";
                               $curr_order_ref_no = $ro['order_ref_no'];
-                            //walang pang lumalabas
+                                //walang pang lumalabas
                                                               
                                                               
                               $sql_get_order_products = "SELECT p.pdt_name
@@ -293,6 +299,9 @@ if(isset($_GET['logout'])){
                               <ul class="list-group">
                                   <?php 
                                     $total_amt = 0.00;
+                                    $shipping_fee = 50.00;
+                                    $total_amt_with_shipping = 0.00;
+
                                     while ($pdt_ord = mysqli_fetch_assoc($sql_product_orders_result)){ 
                                   
                                   //inner 2nd loop to list all the items of the specified order reference number ?>
@@ -301,13 +310,16 @@ if(isset($_GET['logout'])){
                                   
                                 <?php
                                     $total_amt += $pdt_ord['pdt_qty'] * $pdt_ord['pdt_price']; 
+                                    $total_amt_with_shipping = $total_amt + 50.00; 
                                     } ?>
                                 
-                                
-                                  <li class="list-group-item bg-secondary text-light">
-                                     <?php echo "Php " . number_format($total_amt, 2);?>
-                                      
-                                  </li>
+                                <li class="list-group-item">
+                                    <small class="d-block float-end">Amount: <?php echo "Php " . number_format($total_amt, 2);?></small>
+                                    <small class="d-block float-end">+shipping: <?php echo "Php ". number_format($shipping_fee,2);?></small>
+                                </li>
+                                <li class="list-group-item bg-secondary text-light">
+                                     <?php echo "Php " . number_format($total_amt_with_shipping, 2);?>
+                                </li>
                              
                                  <?php if($_GET['order_phases'] == '2') { ?>
                                   <li class="list-group-item">
