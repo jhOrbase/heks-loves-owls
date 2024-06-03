@@ -31,11 +31,15 @@
                 <a href="signup.php" class="btn btn-link" style="text-decoration: none; color: white; font-family: 'Montserrat';">
                     <ion-icon name="person-add-outline"></ion-icon> Sign up    
                 </a>
-
             </div>
         </div>
+        <a href="../search_bar.php" class="btn btn-link float-end" style="text-decoration: none; color: white; font-family: 'Montserrat'; margin-right: 20px;">
+            <ion-icon name="search-outline"></ion-icon>
+        </a>
+
     </div>
 
+   
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
