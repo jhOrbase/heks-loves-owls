@@ -37,7 +37,6 @@ if(isset($_GET['logout'])){
             <a href="?manageproducts" class="btn btn-link" style="text-decoration: none; color: white; font-size: large;">Manage Products</a>
             <a href="?manageorder" class="btn btn-link" style="text-decoration: none; color: white; font-size: large;">Manage Orders</a>
             <a href="?dashboard" class="btn btn-link" style="text-decoration: none; color: white; font-size: large;">Dashboards</a>
-            <a href="?logout" class="btn btn-link" style="text-decoration: none; color: white; font-size: large;">Log out</a>
             <a href="?registered_users" class="btn btn-link" style="text-decoration: none; color: white; font-size: large;">Customer Info</a>
     </div>
 

@@ -16,8 +16,43 @@ session_start();
         header("location: index.php?page=home");
         exit;
     }
+    // Code block for adding items to cart from the search
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET['page']) && $_GET['page'] == 'cart' && isset($_POST['add_to_cart'])) {
+        $productId = mysqli_real_escape_string($conn, $_POST['s_pdt_id']);
+        $productName = mysqli_real_escape_string($conn, $_POST['s_pdt_name']);
+        $productPrice = mysqli_real_escape_string($conn, $_POST['s_pdt_price']);
+        $productImage = mysqli_real_escape_string($conn, $_POST['s_pdt_img']);
+        $quantity = mysqli_real_escape_string($conn, $_POST['qty']);
+        
+        $sql_add_to_cart = "INSERT INTO orders (user_id, pdt_id, pdt_qty, order_phase_status) 
+                            VALUES ('$c_user_id', '$productId', '$quantity', '1')";
+        
+        if (mysqli_query($conn, $sql_add_to_cart)) {
+            header("Location: index.php?page=cart");
+            exit;
+        } else {
+            echo "Error: " . $sql_add_to_cart . "<br>" . mysqli_error($conn);
+        }
+    }
+
+    // Code block for handling checkout process
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET['page']) && $_GET['page'] == 'checkout' && isset($_POST['checkout'])) {
+        $orderId = mysqli_real_escape_string($conn, $_POST['order_id']);
+        
+        $sql_checkout = "UPDATE orders 
+                            SET order_phase_status = '2'
+                        WHERE user_id = '$c_user_id' 
+                            AND order_id = '$orderId'";
+        
+        if (mysqli_query($conn, $sql_checkout)) {
+            header("Location: index.php?page=checkout_success");
+            exit;
+        } else {
+            echo "Error: " . $sql_checkout . "<br>" . mysqli_error($conn);
+        }
+    }
     include_once "../top_border.php"; 
-?>
+    ?>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -401,7 +436,7 @@ session_start();
                 <?php }
     } /*--page--*/
 
-    else {
+    else { 
         
     }
     ?>
