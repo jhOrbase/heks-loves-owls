@@ -173,34 +173,21 @@ session_start();
                                             <?php echo $full_order['pdt_name'] . " - Php " . number_format($full_order['pdt_price'], 2) . " x " . $full_order['pdt_qty'] . " pcs"; ?>
                                         </li>
                                     <?php } 
-                        /* ========update shipping fee==========*/
-                                    $update_shipping_fee = "UPDATE orders AS o
-                                                            JOIN (
-                                                                SELECT MIN(order_id) as min_order_id
-                                                                FROM orders
-                                                                WHERE order_phase_status = '1'
-                                                                GROUP BY order_ref_no
-                                                            ) AS ou ON o.order_id = ou.min_order_id
-                                                                SET o.shipping_fee = $shipping_fee 
-                                                                WHERE o.user_id = '$c_user_id'";
-                                    $sql_result_update = mysqli_query($conn, $update_shipping_fee);
-                                ?>
-                                <?php
+                                    
                                     $total_amt_with_shipping = $total_amt + $shipping_fee;
-                                ?>
+                                    ?>
                                 
-                                <li class="list-group-item float-end">
-                                    <div class="float-end">
-                                        Amount: <?php echo "Php ". number_format($total_amt, 2);?><br>
-                                        <small>+shipping: <?php echo "Php ". number_format($shipping_fee, 2);?></small>
-                                    </div>
-                                </li>
-                                <li class="list-group-item" style="padding-left: 25vh;">
-                                   <b>Total amount: <?php echo "Php ". number_format($total_amt_with_shipping, 2);?></b>
-                                </li>
+                                    <li class="list-group-item float-end">
+                                        <div class="float-end">
+                                            Amount: <?php echo "Php ". number_format($total_amt, 2);?><br>
+                                            <small>+shipping: <?php echo "Php ". number_format($shipping_fee, 2);?></small>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item" style="padding-left: 25vh;">
+                                    <b>Total amount: <?php echo "Php ". number_format($total_amt_with_shipping, 2);?></b>
+                                    </li>
                             </ul>
-
-
+                            
                                 <form action="process_order.php" method="post">
                                     <div class="mt-3">
 
@@ -316,7 +303,7 @@ session_start();
 
         /*=============== MY ORDERS PAGE =================*/
 
-       else if($_GET['page'] == 'myorder'){?>
+       else if($_GET['page'] == 'myorders'){?>
             <div class="row">
                     <?php
                         $sql_get_user_order = "SELECT DISTINCT 

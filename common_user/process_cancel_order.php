@@ -11,7 +11,7 @@ if(isset($_GET['cancel_full_order'])){
     $sql_execute_cancel =  mysqli_query($conn,$sql_cancel_order_from_checkout);
         
     if($sql_execute_cancel){
-        header("location: index.php?page=myorder&msg=product_{$order_ref_no}_cancel"); 
+        header("location: index.php?page=myorders&msg=product_{$order_ref_no}_cancel"); 
         exit(); 
     }
 }

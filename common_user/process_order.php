@@ -9,7 +9,6 @@ if(isset($_POST['o_payment_method'])){
     $payment_method = $_POST['o_payment_method'];
     $order_ref_no = $_POST['o_order_ref_no'];
     $shipping_id = $_POST['o_ship_option'];
-    // $shipping_fee = $_POST['o_shipping_fee'];
     $total_amt_with_shipping = $_POST['o_total_amt_to_pay'];
     
     //if payment method is gcash 
@@ -26,16 +25,14 @@ if(isset($_POST['o_payment_method'])){
 <body style="background: #c3e6f4">
 
 <form action="process_gcash.php" method="POST" class="payment">
-           <!-- Total Amount to Pay: <b> <?php echo "Php " . number_format($total_amt_with_shipping,2); ?> </b> <br>
-           Please pay EXACT AMOUNT to this Gcash Account Number: 09672480993
-           <br>Account Name: ADMIN --> 
+           <<?php echo "Php " . number_format($total_amt_with_shipping,2); ?>
+            
            <hr>
                 <input type="text" hidden name="o_total_amt_to_pay" value="<?php echo $total_amt_with_shipping; ?>" />
                 <input type="text" hidden name="o_payment_method" value="<?php echo $payment_method; ?>" />
                 <input type="text" hidden name="o_order_ref_no" value="<?php echo $order_ref_no; ?>" />
                 <input type="text" hidden name="o_alt_address" value="<?php echo $alt_address; ?>" />
                 <input type="text" hidden name="o_shipping_id" value="<?php echo $shipping_id; ?>" />
-                <input type="text" hidden name="o_shipping_fee" value="<?php echo $shipping_fee; ?>" />
 
 
     <!--gcash-->    
@@ -50,18 +47,18 @@ if(isset($_POST['o_payment_method'])){
 			</div>
 		</div>
 
+        <br>
+        <label for="cardNumber">Gcash Reference Number</label>
+        <input type="text" class="form-control" name="o_gcash_ref_no" placeholder="Reference Number" required autofocus />
+        <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+        <label for="cardExpir">Gcash Account Sender Name</label>
+        <input type="text" class="form-control" name="o_gcash_acc_name" placeholder="Sender Name" required />
+        <label for="cardCVC">Gcash Account Number</label>
+        <input type="text" class="form-control" name="o_gcash_acc_no" placeholder="Account Number" required />
+        <label for="couponCode">Gcash Amount Sent</label>
+        <input type="text" class="form-control" name="o_gcash_amt_sent" />
+        <br>
 
-		<br>
-		<label for="cardNumber">Gcash Reference Number</label>
-		<input type="text" class="form-control" name="o_gcash_ref_no" placeholder="Reference Number" required autofocus />
-		<span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
-		<label for="cardExpir">Gcash Account Sender Name</label>
-		<input type="text" class="form-control" name="o_gcash_acc_name" placeholder="Sender Name" required />
-		<label for="cardCVC">Gcash Account Number</label>
-		<input type="text" class="form-control" name="o_gcash_acc_no" placeholder="Account Number" required />
-		<label for="couponCode">Gcash Amount Sent</label>
-		<input type="text" class="form-control" name="o_gcash_amt_sent" />
-		<br>
             <div style="margin-left:30px; font-size: 18px; ">
                 Total Amount to Pay: <br><strong><?php echo "Php " . number_format($total_amt_with_shipping,2); ?><strong>
             </div>
@@ -73,25 +70,35 @@ if(isset($_POST['o_payment_method'])){
     <?php 
     die();                            
     }    
-        
-    $sql_update_order = "UPDATE orders
-                            SET order_phase_status = 2
-                              , payment_method = '$payment_method'
-                              , order_ref_no = '$order_ref_no'
-                              , alternate_address = '$alt_address'
-                              , shipping_id = '$shipping_id'
-                            --   , shipping_fee = '$shipping_fee'
-                          WHERE user_id = '$user_id' 
-                            AND order_phase_status = '1';";
-                    
-    $execute_update_order = mysqli_query($conn, $sql_update_order);
-    
-    if($execute_update_order == 1){
-        header("location: index.php?page=cart&msg=1");
-    }
-    else{
-        header("location: index.php?page=cart&msg=2");
-    }
+            $sql_update_order = "UPDATE orders 
+                                    SET order_phase_status = 2
+                                    , payment_method = '$payment_method'
+                                    , order_ref_no = '$order_ref_no'
+                                    , alternate_address = '$alt_address'
+                                    , shipping_id = '$shipping_id'
+                                WHERE user_id = '$user_id' 
+                                    AND order_phase_status = '1';";                   
+        $execute_update_order = mysqli_query($conn, $sql_update_order);
+
+    // update shippingfee
+        $update_shipping_fee = "UPDATE orders AS o
+                                        JOIN (
+                                            SELECT MIN(order_id) as min_order_id
+                                            FROM orders
+                                            WHERE order_phase_status = '2'
+                                            GROUP BY order_ref_no
+                                        ) AS ou ON o.order_id = ou.min_order_id
+                                        SET o.shipping_fee = '50.00'
+                                        WHERE o.user_id = '$user_id';";
+        $sql_result_update = mysqli_query($conn, $update_shipping_fee);
+
+if($execute_update_order && $sql_result_update){
+    header("location: index.php?page=cart&msg=1");
+}
+else{
+    header("location: index.php?page=cart&msg=2");
+}
+
 }
 ?>
 <script src="../js/bootstrap.js"></script>
