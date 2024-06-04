@@ -22,31 +22,17 @@ include_once "../dbconnect.php";
                        <div class="card-body">
                            <h1 class="display-1">
                                 <?php
-                                    $sql_get_per_product = "SELECT 
-                                                                p.pdt_name AS pdt_name,
-                                                                p.pdt_img AS pdt_img,
-                                                                SUM(o.pdt_qty) AS total_pdt_qty,
-                                                                SUM(p.pdt_price * o.pdt_qty) + COALESCE(shipping_fee_table.shipping_fee, 0) AS total_amt
-                                                            FROM 
-                                                                orders AS o
-                                                            JOIN 
-                                                                products AS p ON o.pdt_id = p.pdt_id
-                                                            LEFT JOIN (
-                                                                SELECT 
-                                                                    order_ref_no, 
-                                                                    MAX(shipping_fee) AS shipping_fee
-                                                                FROM 
-                                                                    orders
-                                                                WHERE 
-                                                                    shipping_fee IS NOT NULL
-                                                                GROUP BY 
-                                                                    order_ref_no
-                                                                ) AS shipping_fee_table ON o.order_ref_no = shipping_fee_table.order_ref_no
-                                                            GROUP BY 
-                                                                p.pdt_name, p.pdt_img
-                                                            ORDER BY 
-                                                                p.pdt_name DESC;";
-                                
+                                    $sql_get_per_product = "SELECT DISTINCT 
+                                                            p.pdt_name as pdt_name 
+                                                            ,  p.pdt_img as pdt_img   
+                                                            ,  SUM(o.pdt_qty) as total_pdt_qty
+                                                            ,  SUM(p.pdt_price * o.pdt_qty + COALESCE(o.shipping_fee, 0)) AS total_amt
+                                                            FROM orders as o
+                                                            JOIN products as p 
+                                                            ON o.pdt_id = p.pdt_id
+                                                            GROUP BY p.pdt_name, p.pdt_img
+                                                            ORDER BY p.pdt_name DESC";
+
                                     $sql_execute_result = mysqli_query($conn, $sql_get_per_product);?>
                                     <table class="table table-striped">
                                         <tr>
@@ -85,30 +71,18 @@ include_once "../dbconnect.php";
                        <div class="card-body">
                            <h1 class="display-1">
                            <?php
-                                $sql_get_per_day = "SELECT 
-                                                        CAST(o.orders_date_added AS DATE) AS transaction_date_added,
-                                                        SUM(o.pdt_qty) AS total_pdt_qty,
-                                                        SUM(p.pdt_price * o.pdt_qty) + SUM(COALESCE(shipping_fee_table.shipping_fee, 0)) AS total_amt
+                                $sql_get_per_day = " SELECT
+                                                        CAST(o.orders_date_added as DATE) as transaction_date_added
+                                                    , SUM(o.pdt_qty) as total_pdt_qty
+                                                    , SUM(p.pdt_price * o.pdt_qty + COALESCE(o.shipping_fee, 0)) AS total_amt
                                                     FROM 
-                                                        orders AS o 
+                                                        orders as o 
                                                     JOIN 
-                                                        products AS p ON o.pdt_id = p.pdt_id
-                                                    LEFT JOIN (
-                                                        SELECT 
-                                                            order_ref_no, 
-                                                            MAX(shipping_fee) AS shipping_fee
-                                                        FROM 
-                                                            orders
-                                                        WHERE 
-                                                            shipping_fee IS NOT NULL
-                                                        GROUP BY 
-                                                            order_ref_no
-                                                    ) AS shipping_fee_table ON o.order_ref_no = shipping_fee_table.order_ref_no
+                                                        products p ON o.pdt_id = p.pdt_id
                                                     GROUP BY 
-                                                        CAST(o.orders_date_added AS DATE)
+                                                        CAST(o.orders_date_added as DATE)
                                                     ORDER BY 
-                                                        CAST(o.orders_date_added AS DATE) DESC;";
-                                
+                                                        CAST(o.orders_date_added as DATE) DESC;";
                                 $sql_execute_result = mysqli_query($conn, $sql_get_per_day);
                                 ?>
                                 <table class="table table-striped">
@@ -139,7 +113,7 @@ include_once "../dbconnect.php";
                        </div>
                    </div>
            </div>
-            <!--==================Per-Order Report===================-->
+            <!--==================per order Report===================-->
            <div class="col-6 ">
                    <div class="card ps-1">
                    <h3 class="title">Per Order</h3>
@@ -147,27 +121,18 @@ include_once "../dbconnect.php";
                        <div class="card-body">
                            <h1 class="display-1">
                            <?php 
-                                $sql_get_per_order = " SELECT DISTINCT 
+                                $sql_get_per_order = "SELECT DISTINCT 
                                                         o.order_ref_no AS order_ref_no
-                                                        , SUM(o.pdt_qty) AS total_pdt_qty
-                                                        , SUM(p.pdt_price * o.pdt_qty) + COALESCE(shipping_fee_table.shipping_fee, 0) AS total_amt        
-                                                        FROM 
-                                                            orders AS o
-                                                        JOIN 
-                                                            products AS p ON o.pdt_id = p.pdt_id
-                                                            LEFT JOIN (
-                                                                SELECT 
-                                                                    order_ref_no, 
-                                                                    MAX(shipping_fee) AS shipping_fee
-                                                                FROM 
-                                                                    orders
-                                                                WHERE 
-                                                                    shipping_fee IS NOT NULL
-                                                                GROUP BY 
-                                                                    order_ref_no
-                                                            ) AS shipping_fee_table ON o.order_ref_no = shipping_fee_table.order_ref_no
-                                                        GROUP BY 
-                                                            o.order_ref_no;";
+                                                    , SUM(o.pdt_qty) AS total_pdt_qty
+                                                    , SUM(p.pdt_price * o.pdt_qty + COALESCE(o.shipping_fee, 0)) AS total_amt
+                                                    FROM 
+                                                        orders as o 
+                                                    JOIN 
+                                                        products as p 
+                                                    ON 
+                                                        o.pdt_id = p.pdt_id
+                                                    GROUP BY 
+                                                        o.order_ref_no";
 
                                 $sql_execute_result = mysqli_query($conn, $sql_get_per_order);
                             ?>
@@ -213,7 +178,7 @@ include_once "../dbconnect.php";
                                                                 u.username AS username,
                                                                 u.email as email,
                                                                 SUM(o.pdt_qty) AS total_pdt_qty,
-                                                                SUM(p.pdt_price * o.pdt_qty) AS total_amt
+                                                                SUM(p.pdt_price * o.pdt_qty + COALESCE(o.shipping_fee, 0)) AS total_amt
                                                             FROM orders o
                                                             JOIN products p ON o.pdt_id = p.pdt_id
                                                             JOIN users u ON o.user_id = u.user_id
@@ -270,13 +235,14 @@ include_once "../dbconnect.php";
                         /*sql query for yesterday*/ 
                                         $yesterday_sql = "SELECT 
                                                             SUM(o.pdt_qty) AS total_pdt_qty_yesterday,
-                                                            SUM(p.pdt_price * o.pdt_qty) AS total_amt_yesterday
+                                                            SUM(p.pdt_price * o.pdt_qty + COALESCE(o.shipping_fee, 0)) AS total_amt_yesterday
                                                         FROM 
                                                             orders AS o
                                                         JOIN 
                                                             products p ON o.pdt_id = p.pdt_id
                                                         WHERE 
                                                             CAST(o.orders_date_added AS DATE) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)";
+
                                         $yesterday_result = mysqli_query($conn, $yesterday_sql);
                                         $yesterday_rec = mysqli_fetch_assoc($yesterday_result); ?>
                                         <tr>
@@ -296,13 +262,14 @@ include_once "../dbconnect.php";
                         /*sql query for today*/
                                         $today_sql = "SELECT 
                                                         SUM(o.pdt_qty) AS total_pdt_qty_today,
-                                                        SUM(p.pdt_price * o.pdt_qty) AS total_amt_today
+                                                        SUM(p.pdt_price * o.pdt_qty + COALESCE(o.shipping_fee, 0)) AS total_amt_today
                                                     FROM 
                                                         orders AS o
                                                     JOIN 
                                                         products p ON o.pdt_id = p.pdt_id
                                                     WHERE 
                                                         CAST(o.orders_date_added AS DATE) = CURDATE()";
+
                                         $today_result = mysqli_query($conn, $today_sql);
                                         $today_rec = mysqli_fetch_assoc($today_result);
                                     ?>
@@ -362,7 +329,7 @@ include_once "../dbconnect.php";
                         $sql_get_yearly = "SELECT 
                                             YEAR(o.orders_date_added) AS date_year,
                                             SUM(o.pdt_qty) AS total_pdt_qty_year,
-                                            SUM(p.pdt_price * o.pdt_qty) AS total_amt_yearly
+                                            SUM(p.pdt_price * o.pdt_qty + COALESCE(o.shipping_fee, 0)) AS total_amt_yearly
                                         FROM 
                                             orders AS o
                                         JOIN 
